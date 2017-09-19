@@ -6,7 +6,7 @@ module Directory =
 
     /// Creates a directory if it does not exist.
     let CreateDir path = 
-        let dir = DirectoryInfo.ofPath path
+        let dir = DirectoryInfo.OfPath path
         if not dir.Exists then 
             // TODO: logfn "Creating %s" dir.FullName
             dir.Create()
@@ -22,8 +22,8 @@ module Directory =
     /// Gets the first file in the directory matching the search pattern as an option value.
     let tryFindFirstMatchingFile pattern dir = 
         dir
-        |> DirectoryInfo.ofPath
-        |> DirectoryInfo.getMatchingFiles pattern
+        |> DirectoryInfo.OfPath
+        |> DirectoryInfo.MatchingFiles pattern
         |> fun files -> 
             if Seq.isEmpty files then None
             else (Seq.head files).FullName |> Some
@@ -32,14 +32,14 @@ module Directory =
     let findFirstMatchingFile pattern dir = 
         match tryFindFirstMatchingFile pattern dir with
         | Some x -> x
-        | None -> new FileNotFoundException(sprintf "Could not find file matching %s in %s" pattern dir) |> raise
+        | None -> FileNotFoundException(sprintf "Could not find file matching %s in %s" pattern dir) |> raise
         
     /// Deletes a directory if it exists (including all contained elements).
     let delete path = 
-        let dir = DirectoryInfo.ofPath path
+        let dir = DirectoryInfo.OfPath path
         if dir.Exists then 
             // set all files readonly = false
-            DirectoryInfo.setDirectoryReadOnly false dir
+            DirectoryInfo.SetReadOnly false dir
             //!!"/**/*.*"
             //|> SetBaseDir dir.FullName
             //|> (SetReadOnly false)

@@ -5,7 +5,7 @@ open System.IO
 module FileSystemInfo =
     /// Creates a FileInfo or a DirectoryInfo for the given path
     let inline ofPath path : FileSystemInfo = 
-        if Directory.Exists path then upcast DirectoryInfo.ofPath path
+        if Directory.Exists path then upcast DirectoryInfo.OfPath path
         else upcast FileInfo.ofPath path
     
     /// Sets all given files or directories readonly.
@@ -15,8 +15,8 @@ module FileSystemInfo =
             if fi.Exists then fi.IsReadOnly <- readOnly
             else 
                 item
-                |> DirectoryInfo.ofPath
-                |> DirectoryInfo.setDirectoryReadOnly readOnly)
+                |> DirectoryInfo.OfPath
+                |> DirectoryInfo.SetReadOnly readOnly)
 
     /// Active pattern which discriminates between files and directories.
     let (|File|Directory|) (fileSysInfo : FileSystemInfo) = 

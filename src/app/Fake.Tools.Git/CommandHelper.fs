@@ -107,10 +107,10 @@ let fixPath (path:string) =
 /// Searches the .git directory recursivly up to the root.
 let findGitDir repositoryDir =
     let rec findGitDir (dirInfo:DirectoryInfo) =
-        let gitDir = dirInfo.FullName + directorySeparator + ".git" |> DirectoryInfo.ofPath
+        let gitDir = dirInfo.FullName + directorySeparator + ".git" |> DirectoryInfo.OfPath
         if gitDir.Exists then gitDir else findGitDir dirInfo.Parent
 
 
     if isNullOrEmpty repositoryDir then "." else repositoryDir
-      |> DirectoryInfo.ofPath
+      |> DirectoryInfo.OfPath
       |> findGitDir

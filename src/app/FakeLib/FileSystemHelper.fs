@@ -8,34 +8,43 @@ open System.IO
 open System.Runtime.InteropServices
 
 /// Creates a DirectoryInfo for the given path.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.OfPath)")>]
 let inline directoryInfo path = new DirectoryInfo(path)
 
 /// Creates a FileInfo for the given path.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.FileInfo.ofPath)")>]
 let inline fileInfo path = new FileInfo(path)
 
 /// Creates a FileInfo or a DirectoryInfo for the given path
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.FileSystemInfo.ofPath)")>]
 let inline fileSystemInfo path : FileSystemInfo = 
     if Directory.Exists path then upcast directoryInfo path
     else upcast fileInfo path
 
 /// Converts a filename to it's full file system name.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.Path.getFullName)")>]
 let inline FullName fileName = Path.GetFullPath fileName
 
 /// Gets the directory part of a filename.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.Path.getDirectory)")>]
 let inline DirectoryName fileName = Path.GetDirectoryName fileName
 
 /// Gets all subdirectories of a given directory.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.SubDirectories)")>]
 let inline subDirectories (dir : DirectoryInfo) = dir.GetDirectories()
 
 /// Gets all files in the directory.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.Files)")>]
 let inline filesInDir (dir : DirectoryInfo) = dir.GetFiles()
 
 /// Finds all the files in the directory matching the search pattern.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.MatchingFiles)")>]
 let filesInDirMatching pattern (dir : DirectoryInfo) = 
     if dir.Exists then dir.GetFiles pattern
     else [||]
     
 /// Finds all the files in the directory and in all subdirectories matching the search pattern.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.MatchingFilesRecursive)")>]
 let filesInDirMatchingRecursive pattern (dir : DirectoryInfo) = 
     if dir.Exists then dir.GetFiles(pattern, SearchOption.AllDirectories)
     else [||]    
@@ -77,18 +86,22 @@ let rec normalizeFileName (fileName : string) =
             .TrimEnd(Path.DirectorySeparatorChar).ToLower()
 
 /// Checks if dir1 is a subfolder of dir2. If dir1 equals dir2 the function returns also true.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.IsSubfolderOf)")>]
 let rec isSubfolderOf (dir2 : DirectoryInfo) (dir1 : DirectoryInfo) = 
     if normalizeFileName dir1.FullName = normalizeFileName dir2.FullName then true
     else if dir1.Parent = null then false
     else dir1.Parent |> isSubfolderOf dir2
 
 /// Checks if the file is in a subfolder of the dir.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.ContainsFile. NB: reverse parameters)")>]
 let isInFolder (dir : DirectoryInfo) (fileInfo : FileInfo) = isSubfolderOf dir fileInfo.Directory
 
 /// Checks if the directory exists on disk.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.Exists)")>]
 let directoryExists dir = Directory.Exists dir
 
 /// Ensure that directory chain exists. Create necessary directories if necessary.
+[<Obsolete("Use Fake.IO.FileSystem instead (FAKE0001 - package: Fake.IO.FileSystem - member: Fake.IO.FileSystem.DirectoryInfo.Ensure)")>]
 let inline ensureDirExists (dir : DirectoryInfo) = 
     if not dir.Exists then dir.Create()
 

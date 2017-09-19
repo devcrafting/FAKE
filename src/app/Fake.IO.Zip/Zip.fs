@@ -71,7 +71,7 @@ let private createZip fileName comment level (items : (string * string) seq) =
 ///  - `files` - A sequence with files to zip.
 let CreateZip workingDir fileName comment level flatten files =
     let workingDir = 
-        let dir = DirectoryInfo.ofPath workingDir
+        let dir = DirectoryInfo.OfPath workingDir
         if not dir.Exists then failwithf "Directory not found: %s" dir.FullName
         dir.FullName
 

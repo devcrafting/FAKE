@@ -361,7 +361,7 @@ let tryFindFile dirs file =
                    |> String.replace "[ProgramFiles]" Environment.ProgramFiles
                    |> String.replace "[ProgramFilesX86]" Environment.ProgramFilesX86
                    |> String.replace "[SystemRoot]" Environment.SystemRoot
-                   |> DirectoryInfo.ofPath
+                   |> DirectoryInfo.OfPath
                if not dir.Exists then ""
                else 
                    let fi = dir.FullName @@ file

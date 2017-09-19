@@ -28,7 +28,7 @@ module Shell =
     let private DoCopyFile targetName fileName =
         let fi = FileInfo.ofPath fileName
         let target = FileInfo.ofPath targetName
-        DirectoryInfo.ensure target.Directory
+        DirectoryInfo.Ensure target.Directory
         //TODO: logVerbosefn "Copy %s to %s" fileName targetName
         fi.CopyTo(targetName, true) |> ignore
 
@@ -78,8 +78,8 @@ module Shell =
     ///  - `cacheDir` - The cache directory.
     ///  - `files` - The orginal files.
     let CopyCached target cacheDir files =
-        let cache = DirectoryInfo.ofPath cacheDir
-        DirectoryInfo.ensure cache
+        let cache = DirectoryInfo.OfPath cacheDir
+        DirectoryInfo.Ensure cache
         files
         |> Seq.map (fun fileName ->
                let fi = FileInfo.ofPath fileName
@@ -156,7 +156,7 @@ module Shell =
 
     /// Cleans a directory by removing all files and sub-directories.
     let CleanDir path =
-        let di = DirectoryInfo.ofPath path
+        let di = DirectoryInfo.OfPath path
         if di.Exists then
             () //TODO: logfn "Deleting contents of %s" path
             // delete all files
@@ -254,7 +254,7 @@ module Shell =
 
     /// Checks if the directory exists
     let TestDir path =
-        let di = DirectoryInfo.ofPath path
+        let di = DirectoryInfo.OfPath path
         if di.Exists then true
         else
             () //TODO: logfn "%s not found" di.FullName
@@ -270,8 +270,8 @@ module Shell =
 
 
     /// Copies the file structure recursively.
-    let CopyRecursive dir outputDir overWrite = DirectoryInfo.copyRecursiveTo overWrite (DirectoryInfo.ofPath outputDir) (DirectoryInfo.ofPath dir)
-    let CopyRecursiveTo overWrite outputDir dir  = DirectoryInfo.copyRecursiveTo overWrite (DirectoryInfo.ofPath outputDir) (DirectoryInfo.ofPath dir)
+    let CopyRecursive dir outputDir overWrite = DirectoryInfo.CopyRecursiveTo overWrite outputDir dir
+    let CopyRecursiveTo overWrite outputDir dir  = DirectoryInfo.CopyRecursiveTo overWrite outputDir dir
 
     type CopyRecursiveMethod =
     | Overwrite
@@ -289,18 +289,18 @@ module Shell =
     ///  - `dir` - The source directory.
     ///  - `outputDir` - The target directory.
     let CopyRecursive2 method dir outputDir =
-        let dirInfo = DirectoryInfo.ofPath dir
-        let outputDirInfo = DirectoryInfo.ofPath outputDir   
-        let cr2 = DirectoryInfo.copyRecursive2 dirInfo outputDirInfo false
+        let dirInfo = DirectoryInfo.OfPath dir
+        let outputDirInfo = DirectoryInfo.OfPath outputDir   
+        let copyRecursiveWithFilter f = DirectoryInfo.CopyRecursiveToWithFilter false f dirInfo outputDirInfo
         match method with
-        | Overwrite -> DirectoryInfo.copyRecursiveTo true dirInfo outputDirInfo
-        | NoOverwrite -> DirectoryInfo.copyRecursiveTo false dirInfo outputDirInfo
-        | Skip -> cr2 <| fun d f -> d.FullName @@ f.Name |> File.Exists |> not
+        | Overwrite -> DirectoryInfo.CopyRecursiveTo true dirInfo outputDirInfo
+        | NoOverwrite -> DirectoryInfo.CopyRecursiveTo false dirInfo outputDirInfo
+        | Skip -> copyRecursiveWithFilter <| fun d f -> d.FullName @@ f.Name |> File.Exists |> not
         | IncludePattern(pattern) ->
-            cr2 <| fun d f -> d.FullName @@ f.Name |> (isMatch pattern)
+            copyRecursiveWithFilter <| fun d f -> d.FullName @@ f.Name |> (isMatch pattern)
         | ExcludePattern(pattern) ->
-            cr2 <| fun d f -> d.FullName @@ f.Name |> (isMatch pattern) |> not
-        | Filter(f) -> cr2 f
+            copyRecursiveWithFilter <| fun d f -> d.FullName @@ f.Name |> (isMatch pattern) |> not
+        | Filter(f) -> copyRecursiveWithFilter f
 
     /// Moves a single file to the target and overwrites the existing file.
     /// ## Parameters

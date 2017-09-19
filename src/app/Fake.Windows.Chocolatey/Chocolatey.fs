@@ -365,7 +365,7 @@ module Fake.Windows.Choco
         if result <> 0 then failwithf "choco failed with exit code %i." result
 
     let private getTempFolder =
-        let tempFolder = DirectoryInfo.ofPath (Path.GetTempPath() @@ "FakeChocolateyPack")
+        let tempFolder = DirectoryInfo.OfPath (Path.GetTempPath() @@ "FakeChocolateyPack")
 
         if tempFolder.Exists
         then tempFolder.Delete(true)

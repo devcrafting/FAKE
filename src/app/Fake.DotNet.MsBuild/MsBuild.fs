@@ -557,7 +557,7 @@ let BuildWebsiteConfig outputPath configuration projectFile  =
         |> Seq.filter ((=) '/')
         |> Seq.length
 
-    let currentDir = (DirectoryInfo.ofPath ".").FullName
+    let currentDir = (DirectoryInfo.OfPath ".").FullName
     let projectDir = (FileInfo.ofPath projectFile).Directory.FullName
 
     let diff = slashes projectDir - slashes currentDir

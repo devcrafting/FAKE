@@ -45,7 +45,7 @@ let init repositoryDir bare shared =
 ///
 ///  - `repositoryDir` - The path of the directory to clean.
 let fullclean repositoryDir =
-    let di = DirectoryInfo.ofPath repositoryDir
+    let di = DirectoryInfo.OfPath repositoryDir
     if di.Exists then
         Trace.logfn "Deleting contents of %s" repositoryDir
         // delete all files
@@ -57,7 +57,7 @@ let fullclean repositoryDir =
 
         // deletes all subdirectories
         let rec deleteDirs actDir =
-            let di = DirectoryInfo.ofPath actDir
+            let di = DirectoryInfo.OfPath actDir
             if di.Name = ".git" then () else
             try
                 Directory.GetDirectories(actDir) |> Seq.iter deleteDirs
