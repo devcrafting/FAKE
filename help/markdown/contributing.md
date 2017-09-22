@@ -107,7 +107,9 @@ to automatically deploy a preconfigured virtual machine. See the [Vagrant docs](
 We [learned from our mistakes](fake-fake5-learn-more.html), so we use the following guidelines:
 
  - AutoOpen is no longer used
- - we replace `<verb><module>` functions with `<module>.<verb>`
+ - We replace `<verb><module>` functions with `<module>.<verb>`
+    - Use Verbs as much as possible, but keep Nouns (for example getters, to avoid "noise" with "get")
+    - In order, to have a more consistent API and comply with [F# component design guidelines](http://fsharp.org/specs/component-design-guidelines/), we propose to always use PascalCase naming for public functions and camelCase for internal/private functions 
  - We assume the caller is not opening the module but only the global namespaces `Fake.Core`, `Fake.IO`, ...
    and make sure the code looks nice and structured on the caller side.
  - For compatibility reasons (migration from legacy). We assume the user doesn't open the global `Fake` namespace.
